@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shawn's iPhone</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: #242638;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.phone {
+    width: 360px;
+    height: 720px;
+    max-height: 95vh;
+    background: #f2f2f7;
+    border: 7px solid #111;
+    border-radius: 42px;
+    overflow: hidden;
+    position: relative;
+    color: #111;
+}
+
+.page {
+    display: none;
+    height: 100%;
+}
+
+.page.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* LOCKSCREEN */
+
+#lockscreen {
+    background:
+        linear-gradient(rgba(0,0,0,.15), rgba(0,0,0,.3)),
+        url("wallpaper.jpeg") center / cover no-repeat;
+    color: white;
+    text-align: center;
+    justify-content: flex-start;
+    padding: 35px 20px 20px;
+}
+
+.lock-time {
+    font-size: 65px;
+    font-weight: 300;
+    margin: 12px 0;
+}
+
+.notification {
+    background: rgba(255,255,255,.88);
+    color: #222;
+    padding: 13px;
+    border-radius: 15px;
+    text-align: left;
+    margin: 25px 0;
+    font-size: 13px;
+    backdrop-filter: blur(10px);
+}
+
+.notif-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.notification p {
+    margin: 5px 0;
+}
+
+#pin {
+    width: 180px;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    text-align: center;
+    font-size: 20px;
+    letter-spacing: 5px;
+}
+
+.unlock-button {
+    background: rgba(255,255,255,.9);
+    color: #222;
+    border: none;
+    border-radius: 20px;
+    padding: 12px 30px;
+    font-size: 15px;
+    margin-top: 12px;
+}
+
+/* HOME SCREEN */
+
+#homescreen {
+    background:
+        linear-gradient(rgba(0,0,0,.10), rgba(0,0,0,.20)),
+        url("wallpaper.jpeg") center / cover no-repeat;
+    color: white;
+    padding: 25px;
+    text-align: center;
+    justify-content: flex-start;
+}
+
+.home-time {
+    font-size: 40px;
+    margin-top: 45px;
+}
+
+.app-icon {
+    width: 72px;
+    height: 72px;
+    background: #25d366;
+    border-radius: 20px;
+    border: none;
+    font-size: 35px;
+    margin: 25px auto 5px;
+    cursor: pointer;
+}
+
+/* WHATSAPP */
+
+#whatsapp {
+    background: #fff;
+    color: #111;
+}
+
+.wa-top {
+    background: #f7f7f7;
+    padding: 38px 16px 12px;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.wa-search {
+    padding: 8px 12px;
+    background: #f7f7f7;
+}
+
+.wa-search input {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 9px;
+    background: #e5e5ea;
+    font-size: 15px;
+}
+
+.contact {
+    display: flex;
+    align-items: center;
+    padding: 13px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    background: white;
+}
+
+.avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #d9c7e7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 23px;
+    margin-right: 12px;
+}
+
+.contact-info {
+    flex: 1;
+    text-align: left;
+}
+
+.contact-info strong {
+    font-size: 16px;
+}
+
+.contact-info small {
+    display: block;
+    color: #777;
+    margin-top: 5px;
+}
+
+.wa-tabs {
+    margin-top: auto;
+    display: flex;
+    justify-content: space-around;
+    padding: 13px 4px 22px;
+    background: #f7f7f7;
+    border-top: 1px solid #ddd;
+    color: #777;
+    font-size: 10px;
+}
+
+/* CHAT */
+
+#chat {
+    background: #efeae2;
+}
+
+.chat-header {
+    background: #f7f7f7;
+    padding: 37px 12px 12px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.back {
+    border: none;
+    background: none;
+    color: #087df1;
+    font-size: 15px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.chat-person {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.chat-person .avatar {
+    width: 38px;
+    height: 38px;
+    font-size: 19px;
+    margin: 0;
+}
+
+.chat-person small {
+    display: block;
+    color: #777;
+    font-size: 11px;
+    margin-top: 3px;
+}
+
+.messages {
+    flex: 1;
+    padding: 15px 10px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.date-label {
+    align-self: center;
+    background: #e4dacb;
+    color: #555;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 11px;
+    margin-bottom: 8px;
+}
+
+.bubble {
+    max-width: 82%;
+    padding: 10px 12px 7px;
+    border-radius: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #111;
+    overflow-wrap: anywhere;
+}
+
+.received {
+    background: white;
+    align-self: flex-start;
+    border-top-left-radius: 3px;
+}
+
+.sent {
+    background: #d9fdd3;
+    align-self: flex-end;
+    border-top-right-radius: 3px;
+}
+
+.time {
+    display: block;
+    text-align: right;
+    font-size: 10px;
+    color: #777;
+    margin-top: 4px;
+}
+
+.chat-input {
+    background: #f7f7f7;
+    padding: 10px;
+    display: flex;
+    gap: 7px;
+    align-items: center;
+}
+
+.chat-input input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: white;
+    padding: 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.send {
+    border: none;
+    background: #128c7e;
+    color: white;
+    border-radius: 50%;
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+    cursor: pointer;
+}
+
+/* AUTO REPLY */
+
+.reply-button {
+    background: #128c7e;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 9px 15px;
+    margin: 5px auto 8px;
+    cursor: pointer;
+}
+
+/* PROFILE */
+
+#profile {
+    background: #f7f7f7;
+    color: #111;
+}
+
+.profile-header {
+    padding: 38px 15px 15px;
+    background: #f7f7f7;
+    border-bottom: 1px solid #ddd;
+}
+
+.profile-content {
+    text-align: center;
+    padding: 35px 20px;
+}
+
+.profile-photo {
+    width: 105px;
+    height: 105px;
+    border-radius: 50%;
+    background: #d9c7e7;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    margin: 15px auto;
+}
+
+.profile-content p {
+    color: #777;
+    font-size: 14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+    <!-- LOCKSCREEN -->
+
+    <div id="lockscreen" class="page active">
+
+        <p>Thursday, October 29</p>
+
+        <div class="lock-time">17:03</div>
+
+        <h2>Welcome to Shawn's iPhone</h2>
+
+        <div class="notification">
+
+            <div class="notif-top">
+                <strong>🟢 WhatsApp</strong>
+                <small>now</small>
+            </div>
+
+            <strong>Lici</strong>
+
+            <p>mas, kamu udah liat announc blmm?</p>
+
+            <p>aku sekarang udah jadi trainee jeketi :p</p>
+
+        </div>
+
+        <p>Enter Passcode</p>
+
+        <input
+            id="pin"
+            type="password"
+            maxlength="4"
+            placeholder="••••"
+        >
+
+        <button class="unlock-button" onclick="unlockPhone()">
+            Unlock
+        </button>
+
+        <p id="pinMessage"></p>
+
+    </div>
+
+    <!-- HOME SCREEN -->
+
+    <div id="homescreen" class="page">
+
+        <div class="home-time">17:03</div>
+
+        <p>Thursday, October 29</p>
+
+        <h2>Shawn's iPhone</h2>
+
+        <button class="app-icon" onclick="openWhatsApp()">
+            ☎
+        </button>
+
+        <p>WhatsApp</p>
+
+    </div>
+
+    <!-- WHATSAPP LIST -->
+
+    <div id="whatsapp" class="page">
+
+        <div class="wa-top">WhatsApp</div>
+
+        <div class="wa-search">
+            <input
+                type="text"
+                placeholder="Search"
+                oninput="searchContact(this.value)"
+            >
+        </div>
+
+        <div id="contactList">
+
+            <div class="contact" onclick="openChat()">
+
+                <div class="avatar">
+                    <img src="liciwa.jpeg" alt="foto lici">
+
+                <div class="contact-info">
+                    <strong>Lici</strong>
+                    <small>aku sekarang udah jadi trainee jeketi :p</small>
+                </div>
+
+                <small>17.03</small>
+
+            </div>
+
+        </div>
+
+        <div class="wa-tabs">
+            <span>Updates</span>
+            <span>Calls</span>
+            <span>Communities</span>
+            <span>Chats</span>
+            <span>Settings</span>
+        </div>
+
+    </div>
+
+    <!-- CHAT ROOM -->
+
+    <div id="chat" class="page">
+
+        <div class="chat-header">
+
+            <button class="back" onclick="showPage('whatsapp')">
+                ‹ Back
+            </button>
+
+            <div class="chat-person" onclick="showPage('profile')">
+
+                <div class="avatar">🌷</div>
+
+                <div>
+                    <strong>Lici</strong>
+                    <small>online</small>
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="messages" id="messages">
+
+            <div class="date-label">October 29</div>
+
+            <div class="bubble received">
+                mas, kamu udah liat announc blmm?
+                <span class="time">17.03</span>
+            </div>
+
+            <div class="bubble received">
+                aku sekarang udah jadi trainee jeketi :p
+                <span class="time">17.03</span>
+            </div>
+
+        </div>
+
+        <button class="reply-button" onclick="autoReply()">
+            + Reply
+        </button>
+
+        <div class="chat-input">
+
+            <input
+                id="chatText"
+                type="text"
+                placeholder="Message"
+                onkeydown="if(event.key === 'Enter') sendMessage()"
+            >
+
+            <button class="send" onclick="sendMessage()">➤</button>
+
+        </div>
+
+    </div>
+
+    <!-- PROFILE -->
+
+    <div id="profile" class="page">
+
+        <div class="profile-header">
+            <button class="back" onclick="showPage('chat')">
+                ‹ Back to chat
+            </button>
+        </div>
+
+        <div class="profile-content">
+
+            <div class="profile-photo">🌷</div>
+
+            <h2>Lici</h2>
+
+            <p>online</p>
+
+            <p>WhatsApp contact</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function showPage(pageId) {
+
+    document.querySelectorAll(".page").forEach(page => {
+        page.classList.remove("active");
+    });
+
+    document.getElementById(pageId).classList.add("active");
+
+}
+
+function unlockPhone() {
+
+    let pin = document.getElementById("pin").value;
+
+    if (pin === "0423") {
+
+        showPage("homescreen");
+
+    } else {
+
+        document.getElementById("pinMessage").innerText =
+            "PIN salah! Coba lagi.";
+
+    }
+
+}
+
+function openWhatsApp() {
+    showPage("whatsapp");
+}
+
+function openChat() {
+    showPage("chat");
+}
+
+function searchContact(value) {
+
+    let contact = document.querySelector(".contact");
+
+    contact.style.display =
+        "lici".includes(value.toLowerCase()) ? "flex" : "none";
+
+}
+
+let replyIndex = 0;
+
+const replies = [
+    "LAH KOK LU GAK BILANG BILANG SIH DE",
+    "KOK TBTB UDAH DAFTAR JEKETI?",
+    "Lu mau nyenengin mas ya?"
+];
+
+function autoReply() {
+
+    if (replyIndex >= replies.length) {
+        return;
+    }
+
+    addMessage(replies[replyIndex]);
+
+    replyIndex++;
+
+    if (replyIndex >= replies.length) {
+        document.querySelector(".reply-button").innerText =
+            "Semua balasan terkirim";
+    }
+
+}
+
+function addMessage(text) {
+
+    let bubble = document.createElement("div");
+
+    bubble.className = "bubble sent";
+
+    bubble.appendChild(document.createTextNode(text));
+
+    let time = document.createElement("span");
+
+    time.className = "time";
+
+    time.innerText = "17.04 ✓✓";
+
+    bubble.appendChild(time);
+
+    let messages = document.getElementById("messages");
+
+    messages.appendChild(bubble);
+
+    messages.scrollTop = messages.scrollHeight;
+
+}
+
+function sendMessage() {
+
+    let input = document.getElementById("chatText");
+
+    let text = input.value.trim();
+
+    if (text === "") return;
+
+    addMessage(text);
+
+    input.value = "";
+
+}
+
+</script>
+
+</body>
+</html>
